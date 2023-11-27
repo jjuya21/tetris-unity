@@ -6,10 +6,14 @@ using UnityEngine;
 
 public class DB : MonoBehaviour
 {
+    // 현재 로그인한 사용자의 ID
     public static string ID;
+
+    // MySQL 연결 문자열
     public static string conStr = string.Format("Server={0};Database={1};Uid={2};Pwd={3};",
             "127.0.0.1", "user_data", "root", "jy122385@");
 
+    // 점수를 저장하는 함수
     public static void SaveScore(int score)
     {
         using (MySqlConnection conn = new MySqlConnection(conStr))
@@ -27,6 +31,7 @@ public class DB : MonoBehaviour
         }
     }
 
+    // 최고 점수를 가져오는 함수
     public static int GetHighScore()
     {
         using (MySqlConnection conn = new MySqlConnection(conStr))
@@ -51,10 +56,10 @@ public class DB : MonoBehaviour
                 }
             }
         }
-
         return 0;
     }
 
+    // 모든 점수를 가져오는 함수
     public static List<int> GetAllScores()
     {
         List<int> scores = new List<int>();
@@ -83,6 +88,7 @@ public class DB : MonoBehaviour
         return scores;
     }
 
+    // 모든 사용자 목록을 가져오는 함수
     public static List<string> GetAllUsers()
     {
         List<string> users = new List<string>();
@@ -111,6 +117,7 @@ public class DB : MonoBehaviour
         return users;
     }
 
+    // ID와 PW를 확인하여 로그인 여부를 반환하는 함수
     public static bool IdCheck(string userID, string userPW)
     {
         using (MySqlConnection conn = new MySqlConnection(conStr))
@@ -142,32 +149,34 @@ public class DB : MonoBehaviour
         return false;
     }
 
+    // 회원 가입 함수
     public static void SignUp(string userID, string userPW)
     {
-            using (MySqlConnection conn = new MySqlConnection(conStr))
+        using (MySqlConnection conn = new MySqlConnection(conStr))
+        {
+            conn.Open();
+
+            string query = "SELECT COUNT(*) FROM login_data WHERE ID = @id";
+
+            using (MySqlCommand checkCommand = new MySqlCommand(query, conn))
             {
-                conn.Open();
+                checkCommand.Parameters.AddWithValue("@id", userID);
 
-                string query = "SELECT COUNT(*) FROM login_data WHERE ID = @id";
+                int count = Convert.ToInt32(checkCommand.ExecuteScalar());
 
-                using (MySqlCommand checkCommand = new MySqlCommand(query, conn))
+                // ID가 중복되지 않으면 회원 가입 수행
+                if (count == 0)
                 {
-                    checkCommand.Parameters.AddWithValue("@id", userID);
+                    query = "INSERT INTO login_data (ID, PW) VALUES (@id, @pw)";
 
-                    int count = Convert.ToInt32(checkCommand.ExecuteScalar());
-
-                    if (count == 0)
+                    using (MySqlCommand command = new MySqlCommand(query, conn))
                     {
-                        query = "INSERT INTO login_data (ID, PW) VALUES (@id, @pw)";
-
-                            using (MySqlCommand command = new MySqlCommand(query, conn))
-                            {
-                                command.Parameters.AddWithValue("@id", userID);
-                                command.Parameters.AddWithValue("@pw", userPW);
-                                command.ExecuteNonQuery();
-                            }
+                        command.Parameters.AddWithValue("@id", userID);
+                        command.Parameters.AddWithValue("@pw", userPW);
+                        command.ExecuteNonQuery();
                     }
                 }
             }
+        }
     }
 }
