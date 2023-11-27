@@ -1,4 +1,4 @@
-# Tetris-unity
+# Tetris-project
 
 유니티 + MySQL을 활용한 테트리스 게임
 
