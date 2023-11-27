@@ -40,8 +40,7 @@ public class Group : MonoBehaviour
     {
         if (!isValidGridPos())
         {
-            Playfield.GameOver();
-            Destroy(gameObject);
+            FindObjectOfType<MenuSet>().SetMainMenu();
         }
     }
 

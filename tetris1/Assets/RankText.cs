@@ -13,6 +13,7 @@ public class RankText : MonoBehaviour
 
     public static void RankScoreText()
     {
+        rankText.text = "";
         if (rankText != null)
         {
             List<int> allScores = DB.GetAllScores();
