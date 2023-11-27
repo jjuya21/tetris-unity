@@ -67,7 +67,7 @@ public class MenuSet : MonoBehaviour
     {
         mainMenuSet.SetActive(true);
         subMenuSet.SetActive(false);
-        // Playfield.GameOver();  // 이 부분을 주석 처리하여 호출하지 않음
+        Playfield.GameOver();
     }
 
     // 메인 메뉴 해제 함수
