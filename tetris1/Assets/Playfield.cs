@@ -37,7 +37,7 @@ public class Playfield : MonoBehaviour
         {
             Server.Instance().SaveScore(score);
         }
-        RemoveObjectsWithScript<Group>();
+        RemoveObjectsWithScript<Block>();
         score = 0;
         Time.timeScale = 0f; // 게임 일시 정지
     }

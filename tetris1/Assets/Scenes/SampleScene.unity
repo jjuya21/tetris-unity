@@ -3319,14 +3319,14 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 398728a779dd0f24eb5977baf0662d4c, type: 2}
+  m_sharedMaterial: {fileID: -7133530931803374873, guid: 398728a779dd0f24eb5977baf0662d4c, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4294941952
   m_fontColor: {r: 0, g: 0.6154046, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -3380,7 +3380,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 49.13114, z: 0, w: 65.95489}
+  m_margin: {x: 0, y: 39.50689, z: 0, w: 58.181427}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3801,7 +3801,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "ID \uC785\uB825 (\uC601\uC5B4)"
+  m_Text: "ID \uC785\uB825 "
 --- !u!222 &1789644657
 CanvasRenderer:
   m_ObjectHideFlags: 0
