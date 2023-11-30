@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,18 +21,27 @@ public class MenuSet : MonoBehaviour
     public void SignInButtonClick()
     {
         // DB에서 ID와 PW를 확인하여 로그인 성공 시 메뉴를 전환
-        if (DB.IdCheck(inputField_ID.text, inputField_PW.text))
+        Server.Instance().SignIn(inputField_ID.text, inputField_PW.text, (message) =>
         {
-            userMenuSet.SetActive(false);
-            mainMenuSet.SetActive(true);
-        }
+            if (message.result == true)
+            {
+                userMenuSet.SetActive(false);
+                mainMenuSet.SetActive(true);
+            }
+        });
     }
 
     // 회원가입 버튼 클릭 시 호출되는 함수
     public void SignUpButtonClick()
     {
         // DB에 회원가입 정보 전달
-        DB.SignUp(inputField_ID.text, inputField_PW.text);
+        Server.Instance().SignUp(inputField_ID.text, inputField_PW.text);
+    }
+
+    public void LogoutButtonClick()
+    {
+        userMenuSet.SetActive(true);
+        mainMenuSet.SetActive(false);
     }
 
     // 초기화 함수

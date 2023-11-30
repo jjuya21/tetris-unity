@@ -7,6 +7,8 @@ public class RankText : MonoBehaviour
 {
     // 랭킹을 표시하는 Text UI 요소
     public static Text rankText;
+    public static List<int> allScores;
+    public static List<string> allUsers;
 
     // Awake 함수는 스크립트가 활성화될 때 호출되는 함수
     void Awake()
@@ -21,23 +23,18 @@ public class RankText : MonoBehaviour
         // 화면 초기화
         rankText.text = "";
 
-        // rankText가 null이 아닌지 확인
-        if (rankText != null)
+        // 반환된 리스트를 사용하여 상위 10명의 랭킹 정보를 화면에 표시
+        Server.Instance().GetScoreList( (message) =>
         {
-            // DB에서 모든 점수와 사용자 목록을 가져옴
-            List<int> allScores = DB.GetAllScores();
-            List<string> allUsers = DB.GetAllUsers();
-
-            // 반환된 리스트를 사용하여 상위 10명의 랭킹 정보를 화면에 표시
-            for (int i = 0; i < 10 && i < allScores.Count; i++)
+            for (int i = 0; i < message.scores.Count; i++)
             {
                 // 0점 이하의 점수가 나오면 더 이상 표시하지 않음
-                if (allScores[i] == 0)
+                if (message.scores[i] == 0)
                     break;
 
                 // 랭킹 정보를 화면에 추가
-                rankText.text += (i + 1) + "# : " + allUsers[i] + "  " + allScores[i].ToString("D8") + "\n";
+                rankText.text += message.rank[i] + "# : " + message.users[i] + "  " + message.scores[i].ToString("D8") + "\n";
             }
-        }
+        });
     }
 }

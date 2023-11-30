@@ -33,8 +33,10 @@ public class Playfield : MonoBehaviour
     // 게임 오버 처리 함수
     public static void GameOver()
     {
-        // 현재 점수를 저장하고 게임 오브젝트들을 제거
-        DB.SaveScore(score);
+        if (score != 0)
+        {
+            Server.Instance().SaveScore(score);
+        }
         RemoveObjectsWithScript<Group>();
         score = 0;
         ScoreText.UpdateScoreText();
