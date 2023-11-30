@@ -10,7 +10,6 @@ public class ScoreText : MonoBehaviour
     // 점수를 표시하는 Text UI 요소
     public static Text scoreText;
     public static int highscore;
-
     // 시작 시 호출되는 함수
     void Start()
     {
@@ -26,6 +25,8 @@ public class ScoreText : MonoBehaviour
         {
             highscore = message.highScore;
             int score = Playfield.GetScore();
+            if (score > highscore)
+                highscore = score;
             scoreText.text = "Score: " + score.ToString() + "\nHighScore : " + highscore.ToString();
         });
     }
