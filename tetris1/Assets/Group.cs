@@ -89,7 +89,7 @@ public class Group : MonoBehaviour
                 else
                     transform.Rotate(0, 0, 90);
             }
-
+            
             // 아래 화살표 키를 누르거나 시간이 경과하면 블록을 한 칸 아래로 이동
             timer += Time.deltaTime;
             if (Input.GetKeyDown(KeyCode.DownArrow) || timer >= interval)
@@ -107,6 +107,24 @@ public class Group : MonoBehaviour
                     enabled = false; // 현재 스크립트 비활성화
                 }
                 timer = 0f;
+            }
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                while (isValidGridPos())
+                {
+                    transform.position += new Vector3(0, -1, 0);
+                    if (isValidGridPos())
+                        updateGrid();
+                    else
+                    {
+                        // 블록이 이동할 수 없다면 행을 삭제하고 다음 블록을 생성
+                        transform.position += new Vector3(0, 1, 0);
+                        Playfield.deleteFullRows();
+                        FindObjectOfType<Spawner>().spawnNext();
+                        enabled = false; // 현재 스크립트 비활성화
+                        break; // 루프 종료
+                    }
+                }
             }
         }
     }
