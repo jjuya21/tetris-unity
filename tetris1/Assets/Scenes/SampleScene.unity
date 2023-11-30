@@ -848,8 +848,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 297, y: 314}
-  m_SizeDelta: {x: 330, y: 74.97}
+  m_AnchoredPosition: {x: 297, y: 293.54}
+  m_SizeDelta: {x: 330, y: 115.89}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &375641421
 MonoBehaviour:
@@ -884,7 +884,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "score : \nhighscore : "
+  m_Text: "score : \nbestscore : \nhighscore : "
 --- !u!114 &375641422
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2991,6 +2991,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: SetActive
         m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: BestScoreText, Assembly-CSharp
+        m_MethodName: BestScore
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

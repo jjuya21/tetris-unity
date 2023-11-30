@@ -89,6 +89,7 @@ public class MenuSet : MonoBehaviour
     // 게임 시작 함수
     public void StartGame()
     {
+        ScoreText.UpdateScoreText();
         Time.timeScale = 1f;
         mainMenuSet.SetActive(false);
     }

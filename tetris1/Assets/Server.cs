@@ -12,6 +12,7 @@ public class ServerMessage
 {
     public string type;
     public int highScore;
+    public int bestScore;
     public bool result;
     public List<int> scores;
     public List<string> users;
@@ -91,6 +92,18 @@ public class Server : MonoBehaviour
         };
         this.callback = callback;
         ws.Send(JsonUtility.ToJson(getScoreList));
+    }
+
+    public void GetBestScore(Action<ServerMessage> callback)
+    {
+        User getBestScore = new User
+        {
+            UserID = userID,
+            type = "GetBestScore"
+        };
+
+        this.callback = callback;
+        ws.Send(JsonUtility.ToJson(getBestScore));
     }
     public void GetHighScore(Action<ServerMessage> callback)
     {
