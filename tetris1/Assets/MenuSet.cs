@@ -97,6 +97,6 @@ public class MenuSet : MonoBehaviour
     public void SetRankMenu()
     {
         rankMenuSet.SetActive(true);
-        RankText.RankScoreText();
+        RankText_TMP.RankScoreText();
     }
 }
