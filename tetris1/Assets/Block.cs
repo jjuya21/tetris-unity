@@ -62,68 +62,6 @@ public class Block : MonoBehaviour
         // 게임이 진행 중인 경우
         if (Time.timeScale >= 1)
         {
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                // 키 입력에 따라 블록을 이동하고 회전
-                if (Input.GetKeyDown(KeyCode.LeftArrow))
-                {
-                    for (int i = 0; i < 2; i++)
-                    {
-                        transform.position += new Vector3(-1, 0, 0);
-
-                        if (isValidGridPos())
-                            updateGrid();
-                        else
-                        {
-                            transform.position += new Vector3(1, 0, 0);
-                            break;
-                        }
-
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    for (int i = 0; i < 2; i++)
-                    {
-                        transform.position += new Vector3(1, 0, 0);
-
-                        if (isValidGridPos())
-                            updateGrid();
-                        else
-                        {
-                            transform.position += new Vector3(-1, 0, 0);
-                            break;
-                        }
-
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.DownArrow))
-                {
-                    for (int i = 0; i < 2; i++)
-                    {
-                        transform.position += new Vector3(0, -1, 0);
-
-                        if (isValidGridPos())
-                            updateGrid();
-                        else
-                        {
-                            // 블록이 이동할 수 없다면 행을 삭제하고 다음 블록을 생성
-                            transform.position += new Vector3(0, 1, 0);
-                            break;
-                        }
-                    }
-                }
-                else if (Input.GetKeyDown(KeyCode.UpArrow))
-                {
-                    transform.Rotate(0, 0, -180);
-
-                    if (isValidGridPos())
-                        updateGrid();
-                    else
-                        transform.Rotate(0, 0, 180);
-                }
-
-            }
             timer += Time.deltaTime;
             if (Input.GetKeyDown(KeyCode.DownArrow) || timer >= interval)
             {
@@ -159,7 +97,66 @@ public class Block : MonoBehaviour
                     }
                 }
             }
-            
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        transform.position += new Vector3(-1, 0, 0);
+
+                        if (isValidGridPos())
+                            updateGrid();
+                        else
+                        {
+                            transform.position += new Vector3(1, 0, 0);
+                            break;
+                        }
+
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        transform.position += new Vector3(1, 0, 0);
+
+                        if (isValidGridPos())
+                            updateGrid();
+                        else
+                        {
+                            transform.position += new Vector3(-1, 0, 0);
+                            break;
+                        }
+
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    transform.Rotate(0, 0, -180);
+
+                    if (isValidGridPos())
+                        updateGrid();
+                    else
+                        transform.Rotate(0, 0, 180);
+                }
+                else if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        transform.position += new Vector3(0, -1, 0);
+
+                        if (isValidGridPos())
+                            updateGrid();
+                        else
+                        {
+                            // 블록이 이동할 수 없다면 행을 삭제하고 다음 블록을 생성
+                            transform.position += new Vector3(0, 1, 0);
+                            break;
+                        }
+                    }
+                }
+            }
             else
             {
                 if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -188,7 +185,7 @@ public class Block : MonoBehaviour
                         updateGrid();
                     else
                         transform.Rotate(0, 0, 90);
-                }   
+                }
             }
         }
     }
