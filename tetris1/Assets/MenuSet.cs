@@ -11,6 +11,7 @@ public class MenuSet : MonoBehaviour
     public GameObject mainMenuSet;
     public GameObject subMenuSet;
     public GameObject userMenuSet;
+    public GameObject errorMenuSet;
 
     // 로그인 입력 필드와 버튼
     public InputField inputField_ID;
@@ -34,8 +35,10 @@ public class MenuSet : MonoBehaviour
     // 회원가입 버튼 클릭 시 호출되는 함수
     public void SignUpButtonClick()
     {
-        // DB에 회원가입 정보 전달
-        Server.Instance().SignUp(inputField_ID.text, inputField_PW.text);
+        if (inputField_ID.text.Replace(" ", "") == "")
+            errorMenuSet.SetActive(true);
+        else
+            Server.Instance().SignUp(inputField_ID.text, inputField_PW.text);
     }
 
     public void LogoutButtonClick()

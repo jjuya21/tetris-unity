@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Net;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
@@ -8,9 +9,6 @@ public class Block : MonoBehaviour
 {
     private float timer = 0f;
     private float interval = 0.5f; // 블록이 한 칸 아래로 이동하는 간격 (속도 조절)
-    private float moveInterval = 1f;
-    private float heldTimer = 0f;
-    private float heldInterval = 0.5f;
 
     // 현재 그룹의 위치가 유효한지 확인하는 함수
     bool isValidGridPos()
@@ -58,63 +56,74 @@ public class Block : MonoBehaviour
         }
     }
 
-
     // 업데이트 함수
     void Update()
     {
         // 게임이 진행 중인 경우
         if (Time.timeScale >= 1)
         {
-            // 키 입력에 따라 블록을 이동하고 회전
-            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            if (Input.GetKey(KeyCode.LeftShift))
             {
-                transform.position += new Vector3(-1, 0, 0);
-
-                if (isValidGridPos())
-                    updateGrid();
-                else
-                    transform.position += new Vector3(1, 0, 0);
-            }
-            
-            if (Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                transform.position += new Vector3(1, 0, 0);
-
-                if (isValidGridPos())
-                    updateGrid();
-                else
-                    transform.position += new Vector3(-1, 0, 0);
-            }
-            if (Input.GetKey(KeyCode.RightArrow))
-            {
-                heldTimer += Time.deltaTime;
-
-                // 0.2초 간격으로 오른쪽으로 이동
-                if (heldTimer >= heldInterval && Time.time % moveInterval < 0.5f)
+                // 키 입력에 따라 블록을 이동하고 회전
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
                 {
-                    transform.position += new Vector3(1, 0, 0);
+                    for (int i = 0; i < 2; i++)
+                    {
+                        transform.position += new Vector3(-1, 0, 0);
+
+                        if (isValidGridPos())
+                            updateGrid();
+                        else
+                        {
+                            transform.position += new Vector3(1, 0, 0);
+                            break;
+                        }
+
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        transform.position += new Vector3(1, 0, 0);
+
+                        if (isValidGridPos())
+                            updateGrid();
+                        else
+                        {
+                            transform.position += new Vector3(-1, 0, 0);
+                            break;
+                        }
+
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    for (int i = 0; i < 2; i++)
+                    {
+                        transform.position += new Vector3(0, -1, 0);
+
+                        if (isValidGridPos())
+                            updateGrid();
+                        else
+                        {
+                            // 블록이 이동할 수 없다면 행을 삭제하고 다음 블록을 생성
+                            transform.position += new Vector3(0, 1, 0);
+                            break;
+                        }
+                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    transform.Rotate(0, 0, -180);
 
                     if (isValidGridPos())
                         updateGrid();
                     else
-                        transform.position += new Vector3(-1, 0, 0);
+                        transform.Rotate(0, 0, 180);
                 }
-            }
-            else
-            {
-                heldTimer = 0f; // 키가 떨어지면 타이머 초기화
-            }
-            if (Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                transform.Rotate(0, 0, -90);
 
-                if (isValidGridPos())
-                    updateGrid();
-                else
-                    transform.Rotate(0, 0, 90);
             }
-            
-            // 아래 화살표 키를 누르거나 시간이 경과하면 블록을 한 칸 아래로 이동
             timer += Time.deltaTime;
             if (Input.GetKeyDown(KeyCode.DownArrow) || timer >= interval)
             {
@@ -149,6 +158,37 @@ public class Block : MonoBehaviour
                         break; // 루프 종료
                     }
                 }
+            }
+            
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.LeftArrow))
+                {
+                    transform.position += new Vector3(-1, 0, 0);
+
+                    if (isValidGridPos())
+                        updateGrid();
+                    else
+                        transform.position += new Vector3(1, 0, 0);
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow))
+                {
+                    transform.position += new Vector3(1, 0, 0);
+
+                    if (isValidGridPos())
+                        updateGrid();
+                    else
+                        transform.position += new Vector3(-1, 0, 0);
+                }
+                else if (Input.GetKeyDown(KeyCode.UpArrow))
+                {
+                    transform.Rotate(0, 0, -90);
+
+                    if (isValidGridPos())
+                        updateGrid();
+                    else
+                        transform.Rotate(0, 0, 90);
+                }   
             }
         }
     }

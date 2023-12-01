@@ -57,7 +57,7 @@ public class Playfield : MonoBehaviour
     // 주어진 위치가 게임 영역 내부에 있는지 확인하는 함수
     public static bool insideBorder(Vector2 pos)
     {
-        return ((int)pos.x >= 0 && (int)pos.x < w && (int)pos.y >= 0);
+        return ((int)pos.x >= 0 && (int)pos.x < w && (int)pos.y >= 0 && (int)pos.y < 18);
     }
 
     // 특정 행을 삭제하는 함수
