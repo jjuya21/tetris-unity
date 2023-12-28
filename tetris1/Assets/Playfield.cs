@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class Playfield : MonoBehaviour
 {
+    public GameObject GameObject;
+
+    public static float playtime = 0f;
     // 게임 영역의 너비와 높이
     public static int w = 10;
     public static int h = 20;
@@ -30,12 +33,21 @@ public class Playfield : MonoBehaviour
         }
     }
 
-    // 게임 오버 처리 함수
+    void FixedUpdate()
+    {
+        playtime += Time.fixedDeltaTime;
+    }
+
+    public void ResetTime()
+    {
+        playtime = 0f;
+    }
+
     public static void GameOver()
     {
         if (score != 0)
         {
-            Server.Instance().SaveScore(score);
+            Server.Instance().SaveScore(score, playtime);
         }
         RemoveObjectsWithScript<Block>();
         score = 0;

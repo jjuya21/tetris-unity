@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 using WebSocketSharp;//웹 소켓 라이브러리를 사용한다
@@ -17,6 +16,8 @@ public class ServerMessage
     public List<int> scores;
     public List<string> users;
     public List<int> rank;
+    public int currentHighScore;
+    public string user;
 }
 
 [System.Serializable]
@@ -26,17 +27,19 @@ public class User
     public string UserPW;
     public string type;
     public int Score;
+    public float Playtime;
 }
 
 public class Server : MonoBehaviour
 {
+    
     public static ServerMessage serverMessage;
     public static string userID;
     private WebSocket ws;//소켓 선언
 
     private static Server instance;
     Action<ServerMessage> callback;
-    ServerMessage messaage;
+    ServerMessage message;
     public static Server Instance()
     {
         if( instance == null)
@@ -45,7 +48,6 @@ public class Server : MonoBehaviour
             instance = serverObject.AddComponent<Server>();
             GameObject.DontDestroyOnLoad(serverObject);
         }
-
         return instance;
     }
 
@@ -66,20 +68,30 @@ public class Server : MonoBehaviour
     }
     private void Update()
     {
-        if (this.messaage != null)
+        if (this.message != null)
         {
-            this.callback.Invoke(this.messaage);
-            this.messaage = null;
+            if (this.message.type == "CurrentHighScore")
+            {
+                string user = this.message.user;
+                int _score = this.message.currentHighScore;
+                this.message = null;
+            }
+            else
+            {
+                this.callback.Invoke(this.message);
+                this.message = null;
+            }
         }
     }
-    public void SaveScore(int score)
+    public void SaveScore(int score, float playtime)
     {
         // SaveScore 메시지에 해당하는 JSON 데이터 생성
         User saveScoreData = new User
         {
             type = "SaveScore",
             UserID = userID,
-            Score = score
+            Score = score,
+            Playtime = playtime
         };
         // JSON을 문자열로 변환하여 서버로 보냄
         ws.Send(JsonUtility.ToJson(saveScoreData));
@@ -130,7 +142,7 @@ public class Server : MonoBehaviour
         this.callback = callback;
         ws.Send(JsonUtility.ToJson(signInData));
     }
-    public void SignUp(string ID, string PW)
+    public void SignUp(string ID, string PW, Action<ServerMessage> callback)
     {
         User signUpData = new User
         {
@@ -138,12 +150,14 @@ public class Server : MonoBehaviour
             UserID = ID,
             UserPW = PW
         };
+
+        this.callback = callback;
         ws.Send(JsonUtility.ToJson(signUpData));
     }
     void ws_OnMessage(object sender, MessageEventArgs e)
     {
         serverMessage = JsonUtility.FromJson<ServerMessage>(e.Data);
-        this.messaage = serverMessage;
+        this.message = serverMessage;
     }
     void ws_OnOpen(object sender, System.EventArgs e)
     {
@@ -154,4 +168,3 @@ public class Server : MonoBehaviour
         Debug.Log("close"); //디버그 콘솔에 "close"이라고 찍는다.
     }
 }
-

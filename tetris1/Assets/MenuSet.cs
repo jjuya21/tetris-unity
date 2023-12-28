@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
+using System.Threading;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,11 +13,23 @@ public class MenuSet : MonoBehaviour
     public GameObject subMenuSet;
     public GameObject userMenuSet;
     public GameObject errorMenuSet;
+    public GameObject noticationMenuSet;
 
     // 로그인 입력 필드와 버튼
     public InputField inputField_ID;
     public InputField inputField_PW;
     public Button Button_Login;
+
+    public GameObject wrongID_Error;
+    public GameObject nullID_Error;
+    public GameObject duplicationID_Error;
+
+
+    
+    public void NewHighScore()
+    {
+        noticationMenuSet.SetActive(true);
+    }
 
     // 로그인 버튼 클릭 시 호출되는 함수
     public void SignInButtonClick()
@@ -24,10 +37,15 @@ public class MenuSet : MonoBehaviour
         // DB에서 ID와 PW를 확인하여 로그인 성공 시 메뉴를 전환
         Server.Instance().SignIn(inputField_ID.text, inputField_PW.text, (message) =>
         {
-            if (message.result == true)
+            if (message.result)
             {
                 userMenuSet.SetActive(false);
                 mainMenuSet.SetActive(true);
+            }
+            else
+            {
+                errorMenuSet.SetActive(true);
+                wrongID_Error.SetActive(true);
             }
         });
     }
@@ -36,9 +54,19 @@ public class MenuSet : MonoBehaviour
     public void SignUpButtonClick()
     {
         if (inputField_ID.text.Replace(" ", "") == "")
+        {
             errorMenuSet.SetActive(true);
+            nullID_Error.SetActive(true);
+        }
         else
-            Server.Instance().SignUp(inputField_ID.text, inputField_PW.text);
+            Server.Instance().SignUp(inputField_ID.text, inputField_PW.text, (message) =>
+            {
+                if (message.result == false)
+                {
+                    duplicationID_Error.SetActive(true);
+                    errorMenuSet.SetActive(true);
+                }
+            });
     }
 
     public void LogoutButtonClick()
@@ -52,6 +80,7 @@ public class MenuSet : MonoBehaviour
     {
         // 게임 일시 정지
         Time.timeScale = 0f;
+
     }
 
     // 업데이트 함수
